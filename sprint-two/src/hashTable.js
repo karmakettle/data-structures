@@ -38,4 +38,7 @@ HashTable.prototype.remove = function(k){
 
 /*
  * Complexity: What is the time complexity of the above functions?
+ * Constant time, implementing a hash table. Even though we iterate 
+ * over arrays, the size of the arrays doesn't represent the size of
+ * the input--the size by design doesn't exceed a certain number
  */
