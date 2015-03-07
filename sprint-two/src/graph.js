@@ -26,26 +26,25 @@ Graph.prototype.addEdge = function(fromNode, toNode){
 };
 
 Graph.prototype.removeEdge = function(fromNode, toNode){
-  for (var i = 0; i < this.nodes.length; i++) {
-    var node = this.nodes[i];
-    if (node.name === fromNode) {
-      var index = node.pointers.indexOf(toNode);
-      if (index >= 0) {
-        node.pointers.splice(index, 1);
-      }
-    } 
-    else if (node.name === toNode) {
-      var index = node.pointers.indexOf(toNode);
-      if (index >= 0){
-        node.pointers.splice(index, 1);
-      }
-    }
-  }
+  // var nodeMap = [{fromNode: toNode}, {toNode: fromNode}];
+  // for (var i = 0; i < 2; i++) {
+  //   var key = Object.keys(nodeMap[i])[0];
+  //   var edges = this.nodes[key].edges;
+  //   edges.slice(edges.indexOf(nodeMap[i][key]), 1);
+  // }
+
+    var temp = this.nodes[fromNode].edges;
+    temp.splice(temp.indexOf(toNode), 1);
+    this.nodes[fromNode].edges = temp;
+
+    temp = this.nodes[toNode].edges;
+    temp.splice(temp.indexOf(fromNode), 1);
+    this.nodes[toNode].edges = temp;
 };
 
 Graph.prototype.forEachNode = function(cb){
-  for (var i = 1; i < this.nodes.length; i++){
-    cb(this.nodes[i]);
+  for (var key in this.nodes){
+    cb(key);
   }
 };
 
