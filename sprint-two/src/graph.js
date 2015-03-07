@@ -1,59 +1,28 @@
 
 
 var Graph = function(){
-  this.nodes = [];
+  this.nodes = {};
 };
 
 Graph.prototype.addNode = function(node){
-  this.nodes.push({
-    name: node,
-    pointers: [node]
-  });
+  this.nodes[node] = this.nodes[node] || { edges: [] };
 };
 
 Graph.prototype.contains = function(node){
-  for (var i = 0; i < this.nodes.length; i++) {
-    if (this.nodes[i].name === node) {
-      return true;
-    }
-  }
-  return false;
+  return !!this.nodes[node];
 };
 
 Graph.prototype.removeNode = function(node){
-  for (var i = 0; i < this.nodes.length; i++){
-    if (this.nodes[i].name === node){
-      this.nodes.splice(i, 1);
-    }
-  }
+  delete this.nodes[node];
 };
 
 Graph.prototype.hasEdge = function(fromNode, toNode){
-  for (var i = 0; i < this.nodes.length; i++) {
-    var node = this.nodes[i];
-    if (node.name === fromNode) {
-      return node.pointers.indexOf(toNode) >= 0;
-    }
-  }
+  return this.nodes[fromNode].edges.indexOf(toNode) >= 0;
 };
 
 Graph.prototype.addEdge = function(fromNode, toNode){
-//if fromNode or toNode is an object, get its name and that becomes fromNode and toNode
-  if (typeof fromNode !== "string") {
-    fromNode = fromNode.name;
-  }
-  else if (typeof toNode !== "string") {
-      toNode = toNode.name;
-  }
-  for (var i = 0; i < this.nodes.length; i++) {
-    var node = this.nodes[i];
-    if (node.name === fromNode) {
-      node.pointers.push(toNode);
-    } 
-    else if (node.name === toNode) {
-      node.pointers.push(fromNode);
-    }
-  }
+  this.nodes[fromNode].edges.push(toNode);
+  this.nodes[toNode].edges.push(fromNode);
 };
 
 Graph.prototype.removeEdge = function(fromNode, toNode){
